@@ -346,8 +346,8 @@
                 scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
 
             } catch (error) {
-                console.error("寫入失敗：", error);
-                alert("送出失敗，請檢查網路連線。");
+                console.error("Writing Error", error);
+                alert("Check the internet!");
             } finally {
                 // 恢復按鈕狀態
                 btnSend.textContent = "send";
