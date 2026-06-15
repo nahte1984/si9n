@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.6</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.7</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,17 +63,6 @@
             transition: opacity 0.5s ease; /* 與封面淡出同速率的淡入效果 */
         }
 
-        /* 滿版背景，滑動時不跟著動 */
-        .bg-layer {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image: url('bg.png');
-            background-size: cover; /* 自動適應：直式等同高度，橫式等同寬度，多餘出框 */
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
         /* 水平滑動區域 */
         .scroll-container {
             width: 100vw;
@@ -97,6 +86,19 @@
             /* 利用 padding 將第一個格子推到正中央： 50vw - 一半的格子寬度(31.875dvh / 2) */
             padding-left: calc(50vw - 15.9375dvh);
             padding-right: 50vw; /* 右側預留空白，讓最後一個也能滑到中間 */
+            
+            /* 將背景圖套用在軌道上，使其跟隨滑動並無縫複製 */
+            background-image: url('bg.png');
+            background-repeat: repeat;
+            background-position: left center;
+            background-size: auto 100dvh; /* 直式螢幕預設：高度撐滿，寬度等比縮放並無縫重複 */
+        }
+
+        /* 橫式螢幕：寬度撐滿，高度等比縮放並無縫重複 */
+        @media (min-aspect-ratio: 1/1) {
+            .track {
+                background-size: 100vw auto;
+            }
         }
 
         /* 單一簽名格子的通用樣式 */
@@ -169,7 +171,6 @@
 
     <!-- 2. 簽名互動區 -->
     <div id="app">
-        <div class="bg-layer"></div>
         <div class="scroll-container" id="scroll-container">
             <div class="track" id="track">
                 
@@ -360,8 +361,8 @@
                 scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
 
             } catch (error) {
-                console.error("Writing database error:", error);
-                alert("Check the internet!");
+                console.error("寫入失敗：", error);
+                alert("送出失敗，請檢查網路連線。");
             } finally {
                 // 恢復按鈕狀態
                 btnSend.textContent = "send";
