@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿ˏˋ₊·</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.2</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,9 +19,9 @@
         html, body { 
             background-color: #800000; 
             overflow: hidden; /* 防止整個網頁上下捲動 */
-            touch-action: none; /* 防止手機瀏覽器手勢縮放 */
             font-family: sans-serif;
-            transition: background-color 0.5s ease; /* 加入背景色漸變動畫 */
+            /* 移除 touch-action: none，否則手機無法左右滑動 */
+            /* 移除 background-color 的漸變，改由 cover 淡出負責視覺過渡，強制 Safari 立即更新邊界顏色 */
         }
 
         /* ----- 封面 (載入時的畫面) ----- */
@@ -67,6 +67,7 @@
             overflow-x: auto;
             overflow-y: hidden;
             scroll-behavior: smooth; /* 平滑捲動 */
+            -webkit-overflow-scrolling: touch; /* 確保 iOS Safari 順暢滑動 */
             /* 隱藏滾動條提升美觀 (依瀏覽器支援) */
             scrollbar-width: none; 
         }
@@ -211,10 +212,13 @@
 
         // --- 點擊標題進入 ---
         titleBtn.addEventListener('click', () => {
+            // 1. 強制立即變更底層與 Safari 狀態列顏色 (不加漸變，避免 Safari 渲染 bug)
+            document.documentElement.style.backgroundColor = '#fecdd3'; 
+            document.body.style.backgroundColor = '#fecdd3';
+            document.getElementById('theme-color').setAttribute('content', '#fecdd3');
+            
+            // 2. 讓原本是暗紅色的封面層(cover)淡出，製造完美的視覺過渡
             cover.style.opacity = '0';
-            document.body.style.backgroundColor = '#fecdd3'; // 點擊後變更網頁底色
-            document.documentElement.style.backgroundColor = '#fecdd3'; // 變更 html 底色
-            document.getElementById('theme-color').setAttribute('content', '#fecdd3'); // 變更 Safari 頂部狀態列顏色
             
             setTimeout(() => {
                 cover.style.display = 'none';
