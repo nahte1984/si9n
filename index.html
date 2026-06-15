@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.9</title>
-    <!-- 引入指定的字型 Solway Medium 500 -->
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.9.1</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Solway:wght@500&display=swap" rel="stylesheet">
@@ -30,7 +28,7 @@
             background-color: #800000;
             z-index: 100;
             display: flex;
-            flex-direction: column; /* 改為垂直排列以容納載入文字 */
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             transition: opacity 0.5s ease;
@@ -39,11 +37,11 @@
             max-width: 25vw;
             max-height: 25vh;
             cursor: pointer;
-            pointer-events: none; /* 初始禁止點擊，等資料載入完才開放 */
+            pointer-events: none; 
             transition: opacity 0.5s ease;
         }
 
-        /* 載入中的呼吸動畫 */
+        
         .loading-pulse {
             animation: title-pulse 1.5s infinite ease-in-out;
         }
@@ -328,7 +326,7 @@
             const rect = canvas.getBoundingClientRect();
             let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            // 移除四捨五入以獲得小數點級別的精確座標，提升取樣密度
+            
             return {
                 x: clientX - rect.left,
                 y: clientY - rect.top
@@ -341,7 +339,6 @@
             const pos = getMousePos(e);
             ctx.beginPath();
             ctx.moveTo(pos.x, pos.y);
-            // 點擊即畫下一點
             ctx.lineTo(pos.x + 1, pos.y + 1);
             ctx.stroke();
             hasDrawn = true;
