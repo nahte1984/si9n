@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.3</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.4</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -213,11 +213,6 @@
 
         // --- 點擊標題進入 ---
         titleBtn.addEventListener('click', () => {
-            // 切換到底層互動區的黑色背景，讓邊界呈現黑色
-            document.documentElement.style.backgroundColor = '#000000';
-            document.body.style.backgroundColor = '#000000';
-            document.getElementById('theme-color').setAttribute('content', '#000000');
-
             // 讓原本的封面層(cover)淡出
             cover.style.opacity = '0';
             
