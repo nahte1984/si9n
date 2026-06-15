@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.2</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.3</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,6 @@
             overflow: hidden; /* 防止整個網頁上下捲動 */
             font-family: sans-serif;
             /* 移除 touch-action: none，否則手機無法左右滑動 */
-            /* 移除 background-color 的漸變，改由 cover 淡出負責視覺過渡，強制 Safari 立即更新邊界顏色 */
         }
 
         /* ----- 封面 (載入時的畫面) ----- */
@@ -47,6 +46,8 @@
             inset: 0;
             z-index: 1;
             display: none; /* 預設隱藏，點擊封面後顯示 */
+            opacity: 0; /* 預設全透明，供淡入動畫使用 */
+            transition: opacity 0.5s ease; /* 與封面淡出同速率的淡入效果 */
         }
 
         /* 滿版背景，滑動時不跟著動 */
@@ -212,18 +213,26 @@
 
         // --- 點擊標題進入 ---
         titleBtn.addEventListener('click', () => {
-            // 1. 強制立即變更底層與 Safari 狀態列顏色 (不加漸變，避免 Safari 渲染 bug)
-            document.documentElement.style.backgroundColor = '#fecdd3'; 
-            document.body.style.backgroundColor = '#fecdd3';
-            document.getElementById('theme-color').setAttribute('content', '#fecdd3');
-            
-            // 2. 讓原本是暗紅色的封面層(cover)淡出，製造完美的視覺過渡
+            // 切換到底層互動區的黑色背景，讓邊界呈現黑色
+            document.documentElement.style.backgroundColor = '#000000';
+            document.body.style.backgroundColor = '#000000';
+            document.getElementById('theme-color').setAttribute('content', '#000000');
+
+            // 讓原本的封面層(cover)淡出
             cover.style.opacity = '0';
             
+            // 讓互動頁(app)設定為顯示，但保持透明
+            appView.style.display = 'block';
+            initCanvas(); // 顯示後立刻初始化畫布尺寸
+            
+            // 延遲一點點時間觸發互動頁的淡入動畫，使其與封面淡出同步
+            setTimeout(() => {
+                appView.style.opacity = '1';
+            }, 10);
+            
+            // 動畫結束後徹底隱藏封面
             setTimeout(() => {
                 cover.style.display = 'none';
-                appView.style.display = 'block';
-                initCanvas(); // 顯示後初始化畫布尺寸
             }, 500);
         });
 
