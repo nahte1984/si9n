@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.5</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.6</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +30,7 @@
             background-color: #800000;
             z-index: 100;
             display: flex;
+            flex-direction: column; /* 改為垂直排列以容納載入文字 */
             justify-content: center;
             align-items: center;
             transition: opacity 0.5s ease;
@@ -38,6 +39,18 @@
             max-width: 25vw;
             max-height: 25vh;
             cursor: pointer;
+            pointer-events: none; /* 初始禁止點擊，等資料載入完才開放 */
+            transition: opacity 0.5s ease;
+        }
+
+        /* 載入中的呼吸動畫 */
+        .loading-pulse {
+            animation: title-pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes title-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.75; }
         }
 
         /* ----- 互動頁 (簽名簿) ----- */
@@ -151,7 +164,7 @@
 
     <!-- 1. 封面區 -->
     <div id="cover">
-        <img src="title.png" alt="點擊進入" id="title-btn">
+        <img src="title.png" alt="點擊進入" id="title-btn" class="loading-pulse">
     </div>
 
     <!-- 2. 簽名互動區 -->
@@ -211,6 +224,7 @@
         let ctx = canvas.getContext('2d');
         let isDrawing = false;
         let hasDrawn = false; // 判斷是否空白
+        let isDataLoaded = false; // 判斷資料庫是否完成初次載入
 
         // --- 點擊標題進入 ---
         titleBtn.addEventListener('click', () => {
@@ -346,7 +360,7 @@
                 scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
 
             } catch (error) {
-                console.error("Writing Error", error);
+                console.error("Writing database error:", error);
                 alert("Check the internet!");
             } finally {
                 // 恢復按鈕狀態
@@ -378,6 +392,14 @@
                     track.appendChild(newCell);
                 }
             });
+
+            // 當第一批資料載入完成時，解除封面的點擊限制，移除呼吸動畫並恢復 100% 透明度
+            if (!isDataLoaded) {
+                isDataLoaded = true;
+                titleBtn.classList.remove('loading-pulse');
+                titleBtn.style.opacity = '1';
+                titleBtn.style.pointerEvents = 'auto';
+            }
         });
 
     </script>
