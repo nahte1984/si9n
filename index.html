@@ -166,7 +166,7 @@
 
     <!-- 1. 封面區 -->
     <div id="cover">
-        <img src="title.png" alt="點擊進入" id="title-btn" class="loading-pulse">
+        <img src="title.png" alt="sign on me" id="title-btn" class="loading-pulse">
     </div>
 
     <!-- 2. 簽名互動區 -->
@@ -361,8 +361,8 @@
                 scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
 
             } catch (error) {
-                console.error("寫入失敗：", error);
-                alert("送出失敗，請檢查網路連線。");
+                console.error("writing error:", error);
+                alert("check the internet!");
             } finally {
                 // 恢復按鈕狀態
                 btnSend.textContent = "send";
