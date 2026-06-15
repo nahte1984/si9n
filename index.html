@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.9.2</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v2.0</title>
+    <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Solway:wght@500&display=swap" rel="stylesheet">
@@ -28,7 +30,7 @@
             background-color: #800000;
             z-index: 100;
             display: flex;
-            flex-direction: column; 
+            flex-direction: column; /* 改為垂直排列以容納載入文字 */
             justify-content: center;
             align-items: center;
             transition: opacity 0.5s ease;
@@ -37,11 +39,11 @@
             max-width: 25vw;
             max-height: 25vh;
             cursor: pointer;
-            pointer-events: none; 
+            pointer-events: none; /* 初始禁止點擊，等資料載入完才開放 */
             transition: opacity 0.5s ease;
         }
 
-        
+        /* 載入中的呼吸動畫 */
         .loading-pulse {
             animation: title-pulse 1.5s infinite ease-in-out;
         }
@@ -157,8 +159,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-top: 4px; /* 將文字位置往下微調 3px */
-            color: #fecdd3;
+            padding-top: 3px; /* 將文字位置往下微調 3px */
+            color: white;
             font-family: 'Solway', serif;
             font-weight: 500;
             font-size: 2.25dvh; /* 畫面的相對大小，約為原來的75% */
@@ -244,6 +246,19 @@
         let isDataLoaded = false; // 判斷資料庫是否完成初次載入
         let isBgLoaded = false; // 新增：判斷背景圖是否載入完成
         let isAppReady = false; // 新增：判斷整體是否皆載入完成
+        
+        let brushColor = '#313131'; // 預設畫筆顏色 (台灣境內)
+
+        // --- 偵測 IP 決定畫筆顏色 ---
+        fetch('https://get.geojs.io/v1/ip/country.json')
+            .then(response => response.json())
+            .then(data => {
+                if (data.country !== 'TW') {
+                    brushColor = '#b60000'; // 非台灣地區改為紅色
+                    if (ctx) ctx.strokeStyle = brushColor; // 確保若畫布已載入能即時更新
+                }
+            })
+            .catch(err => console.error("IP 位置偵測失敗，使用預設顏色", err));
 
         // --- 預載背景圖片 ---
         const preloadBg = new Image();
@@ -301,7 +316,7 @@
             ctx.lineWidth = isMobile ? 11 : 16; 
             ctx.lineCap = 'round';   // 圓形端點
             ctx.lineJoin = 'round';  // 轉折處圓滑
-            ctx.strokeStyle = '#313131';
+            ctx.strokeStyle = brushColor; // 使用變數，會根據剛剛偵測 IP 的結果改變
             ctx.imageSmoothingEnabled = false; // 關閉像素平滑補償
         }
 
@@ -326,7 +341,7 @@
             const rect = canvas.getBoundingClientRect();
             let clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
             let clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            
+            // 移除四捨五入以獲得小數點級別的精確座標，提升取樣密度
             return {
                 x: clientX - rect.left,
                 y: clientY - rect.top
@@ -339,6 +354,7 @@
             const pos = getMousePos(e);
             ctx.beginPath();
             ctx.moveTo(pos.x, pos.y);
+            // 點擊即畫下一點
             ctx.lineTo(pos.x + 1, pos.y + 1);
             ctx.stroke();
             hasDrawn = true;
