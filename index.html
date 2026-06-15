@@ -12,15 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Solway:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        /* 重置基礎樣式 */
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* 將 html 也加入背景色設定，解決 Safari 上下邊緣沒變色的問題 */
+        
         html, body { 
             background-color: #800000; 
-            overflow: hidden; /* 防止整個網頁上下捲動 */
+            overflow: hidden; 
             font-family: sans-serif;
-            /* 移除 touch-action: none，否則手機無法左右滑動 */
+            
         }
 
         /* ----- 封面 (載入時的畫面) ----- */
@@ -148,10 +148,10 @@
 
         /* 底部控制列 (包含按鈕) */
         .controls {
-            height: 40px; /* 按鈕高度縮小為原本的三分之一 */
+            height: 40px; 
             width: 100%;
             display: flex;
-            background-color: #b60000; /* 與框線同色，視覺融為一體 */
+            background-color: #b60000; 
         }
         
         .btn {
@@ -184,7 +184,7 @@
 
     <!-- 1. 封面區 -->
     <div id="cover">
-        <img src="title.png" alt="點擊進入" id="title-btn" class="loading-pulse">
+        <img src="title.png" alt="Sign me in" id="title-btn" class="loading-pulse">
     </div>
 
     <!-- 2. 簽名互動區 -->
@@ -300,7 +300,7 @@
 
             // 細緻圓形畫筆設定 (手機版尺寸為原本75%)
             const isMobile = window.innerWidth <= 768;
-            ctx.lineWidth = isMobile ? 12.525 : 16.7; 
+            ctx.lineWidth = isMobile ? 11 : 16; 
             ctx.lineCap = 'round';   // 圓形端點
             ctx.lineJoin = 'round';  // 轉折處圓滑
             ctx.strokeStyle = '#313131';
