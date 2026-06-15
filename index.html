@@ -258,7 +258,7 @@
                     if (ctx) ctx.strokeStyle = brushColor; // 確保若畫布已載入能即時更新
                 }
             })
-            .catch(err => console.error("IP 位置偵測失敗，使用預設顏色", err));
+            .catch(err => console.error("IP detection failed. Using color #313131.", err));
 
         // --- 預載背景圖片 ---
         const preloadBg = new Image();
