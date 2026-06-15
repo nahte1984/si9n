@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
     <meta name="theme-color" id="theme-color" content="#800000">
-    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.8</title>
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿₊· v1.9</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,6 +112,24 @@
             display: flex;
             flex-direction: column;
             position: relative;
+        }
+
+        /* 距離主框線 5px 的 1px 內部裝飾細線 */
+        .cell::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            border: 1px solid #b60000;
+            pointer-events: none; /* 確保不會阻擋畫布的繪圖事件 */
+            z-index: 10; /* 確保線條疊在內容之上 */
+        }
+
+        /* 針對第一個空白的簽名格，底部框線要避開 40px 高的按鈕 (5px + 40px = 45px) */
+        #active-cell::before {
+            bottom: 45px;
         }
 
         /* 畫布區域 */
