@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>數位簽名簿</title>
+    <!-- 加入 theme-color 讓手機瀏覽器狀態列也能吃到顏色 -->
+    <meta name="theme-color" id="theme-color" content="#800000">
+    <title>ˊ˗簽ˏˋ名₊·—̳͟͞͞簿ˏˋ₊·</title>
     <!-- 引入指定的字型 Solway Medium 500 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +15,8 @@
         /* 重置基礎樣式 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { 
+        /* 將 html 也加入背景色設定，解決 Safari 上下邊緣沒變色的問題 */
+        html, body { 
             background-color: #800000; 
             overflow: hidden; /* 防止整個網頁上下捲動 */
             touch-action: none; /* 防止手機瀏覽器手勢縮放 */
@@ -210,6 +213,8 @@
         titleBtn.addEventListener('click', () => {
             cover.style.opacity = '0';
             document.body.style.backgroundColor = '#fecdd3'; // 點擊後變更網頁底色
+            document.documentElement.style.backgroundColor = '#fecdd3'; // 變更 html 底色
+            document.getElementById('theme-color').setAttribute('content', '#fecdd3'); // 變更 Safari 頂部狀態列顏色
             
             setTimeout(() => {
                 cover.style.display = 'none';
