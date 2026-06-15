@@ -18,6 +18,7 @@
             overflow: hidden; /* 防止整個網頁上下捲動 */
             touch-action: none; /* 防止手機瀏覽器手勢縮放 */
             font-family: sans-serif;
+            transition: background-color 0.5s ease; /* 加入背景色漸變動畫 */
         }
 
         /* ----- 封面 (載入時的畫面) ----- */
@@ -32,13 +33,9 @@
             transition: opacity 0.5s ease;
         }
         #title-btn {
-            max-width: 30vw;
-            max-height: 30vh;
+            max-width: 25vw;
+            max-height: 25vh;
             cursor: pointer;
-            transition: transform 0.2s;
-        }
-        #title-btn:hover {
-            transform: scale(1.05);
         }
 
         /* ----- 互動頁 (簽名簿) ----- */
@@ -127,13 +124,10 @@
             color: white;
             font-family: 'Solway', serif;
             font-weight: 500;
-            font-size: 24px; /* 微調字體大小以適應變矮的按鈕 */
+            font-size: 2.25dvh; /* 畫面的相對大小，約為原來的75% */
             cursor: pointer;
             user-select: none;
-            transition: background-color 0.2s;
-        }
-        .btn:active {
-            background-color: #8B0000;
+            transition: opacity 0.2s;
         }
 
         /* 過去的簽名格內的圖片 */
@@ -215,6 +209,8 @@
         // --- 點擊標題進入 ---
         titleBtn.addEventListener('click', () => {
             cover.style.opacity = '0';
+            document.body.style.backgroundColor = '#fecdd3'; // 點擊後變更網頁底色
+            
             setTimeout(() => {
                 cover.style.display = 'none';
                 appView.style.display = 'block';
@@ -229,8 +225,9 @@
             canvas.width = rect.width;
             canvas.height = rect.height;
 
-            // 細緻圓形畫筆設定
-            ctx.lineWidth = 16.7; // 粗細縮小至原本的三分之一
+            // 細緻圓形畫筆設定 (手機版尺寸為原本75%)
+            const isMobile = window.innerWidth <= 768;
+            ctx.lineWidth = isMobile ? 12.525 : 16.7; 
             ctx.lineCap = 'round';   // 圓形端點
             ctx.lineJoin = 'round';  // 轉折處圓滑
             ctx.strokeStyle = '#313131';
@@ -316,7 +313,7 @@
             if (!hasDrawn) return; // 畫面空白無法送出
 
             // 按鈕加上視覺回饋
-            btnSend.textContent = "傳送中...";
+            btnSend.textContent = "sending...";
             btnSend.style.opacity = '0.7';
             btnSend.style.pointerEvents = 'none';
 
